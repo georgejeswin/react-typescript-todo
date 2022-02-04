@@ -1,26 +1,40 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import React, { ChangeEvent, FC, useState } from "react";
 
-function App() {
+type todoType = string;
+const App: FC = () => {
+  const [todos, setTodos] = useState<todoType[]>([]);
+  const [text, setText] = useState<string>("");
+  const handleChange: Function = (e: ChangeEvent<HTMLInputElement>): void => {
+    setText(e.target.value);
+  };
+  const handleSubmit = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    setTodos([...todos, text]);
+    setText("");
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <h1>Todo</h1>
+      <form className="todoForm" onSubmit={(e) => handleSubmit(e)}>
+        <input
+          type="text"
+          required
+          placeholder="Enter todo"
+          value={text}
+          onChange={(e) => handleChange(e)}
+        />
+        <input type="submit" />
+      </form>
+      <div className="todos">
+        <ul>
+          {todos.map((todo: any) => (
+            <li>{todo}</li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
-}
+};
 
 export default App;
